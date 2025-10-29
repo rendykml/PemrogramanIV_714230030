@@ -31,7 +31,7 @@ class ColumnRowApp extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 21),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
