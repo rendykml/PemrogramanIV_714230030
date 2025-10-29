@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const Pertemuan4App());
+  runApp(const ColumnRowApp());
 }
 
-class Pertemuan4App extends StatelessWidget {
-  const Pertemuan4App({super.key});
+class ColumnRowApp extends StatelessWidget {
+  const ColumnRowApp({super.key});
 
   @override
   Widget build(BuildContext context) {
