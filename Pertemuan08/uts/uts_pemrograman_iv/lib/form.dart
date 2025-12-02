@@ -21,6 +21,7 @@ class _MyFormState extends State<MyForm> {
   TextEditingController _controllerImage = TextEditingController();
   final List<Map<String, dynamic>> _myDataList = [];
   Map<String, dynamic>? editedData;
+  Color _selectedColor = const Color.fromARGB(255, 243, 243, 243);
 
   @override
   void dispose() {
@@ -36,6 +37,7 @@ class _MyFormState extends State<MyForm> {
       'phone number': _controllerPhoneNumber.text,
       'date': _controllerDate.text,
       'image': _controllerImage.text,
+      'color': _selectedColor.value,
     };
     setState(() {
       if (editedData != null) {
@@ -45,6 +47,7 @@ class _MyFormState extends State<MyForm> {
         editedData!['phone number'] = data['phone number'];
         editedData!['date'] = data['date'];
         editedData!['image'] = data['image'];
+        editedData!['color'] = data['color'];
         // Kosongkan kembali editedData setelah proses edit selesai
         editedData = null;
       } else {
@@ -53,7 +56,9 @@ class _MyFormState extends State<MyForm> {
       }
       _controllerName.clear();
       _controllerDate.clear();
+      _controllerImage.clear();
       _controllerPhoneNumber.clear();
+      _selectedColor = const Color.fromARGB(255, 243, 243, 243);
     });
   }
 
@@ -63,6 +68,7 @@ class _MyFormState extends State<MyForm> {
       _controllerDate.text = data['date'];
       _controllerPhoneNumber.text = data['phone number'];
       _controllerImage.text = data['image'];
+      _selectedColor = Color(data['color']);
       editedData = data;
     });
   }
@@ -118,8 +124,6 @@ class _MyFormState extends State<MyForm> {
   String? _validatePhoneNumber(String? value) {
     final RegExp regExp = RegExp(r'^62[0-9]{8,13}$');
 
-    // final RegExp regExp = RegExp(expression);
-
     if (value!.isEmpty) {
       return 'Please enter your phone number';
     }
@@ -152,200 +156,310 @@ class _MyFormState extends State<MyForm> {
           style: TextStyle(color: Color(0xFF43334C)),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _controllerPhoneNumber,
-                  validator: _validatePhoneNumber,
-                  cursorColor: Color(0xFF1B3C53),
-                  decoration: const InputDecoration(
-                    hintText: 'Write your phone number here...',
-                    labelText: 'Phone Number',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF1B3C53),
-                        width: 2.5,
+      body: Container(
+        color: Color.fromARGB(255, 245, 245, 245),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _controllerPhoneNumber,
+                    validator: _validatePhoneNumber,
+                    cursorColor: Color(0xFF1B3C53),
+                    decoration: const InputDecoration(
+                      hintText: 'Write your phone number here...',
+                      labelText: 'Phone Number',
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFF1B3C53),
+                          width: 2.5,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                    floatingLabelStyle: TextStyle(
-                      color: Color(0xFF1B3C53),
-                      fontWeight: FontWeight.w600,
+                      floatingLabelStyle: TextStyle(
+                        color: Color(0xFF1B3C53),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _controllerName,
-                  validator: _validateName,
-                  cursorColor: Color(0xFF1B3C53),
-                  decoration: const InputDecoration(
-                    hintText: 'Write your name here...',
-                    labelText: 'Name',
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF1B3C53),
-                        width: 2.5,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _controllerName,
+                    validator: _validateName,
+                    cursorColor: Color(0xFF1B3C53),
+                    decoration: const InputDecoration(
+                      hintText: 'Write your name here...',
+                      labelText: 'Name',
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFF1B3C53),
+                          width: 2.5,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                    floatingLabelStyle: TextStyle(
-                      color: Color(0xFF1B3C53),
-                      fontWeight: FontWeight.w600,
+                      floatingLabelStyle: TextStyle(
+                        color: Color(0xFF1B3C53),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _controllerDate,
-                  validator: _validateDate,
-                  readOnly: true,
-                  cursorColor: Color(0xFF1B3C53),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _controllerDate,
+                    validator: _validateDate,
+                    readOnly: true,
+                    cursorColor: Color(0xFF1B3C53),
 
-                  decoration: InputDecoration(
-                    hintText: 'Put your date here...',
-                    labelText: 'Date',
-                    suffixIcon: Icon(
-                      Icons.calendar_today,
-                      color: Color(0xFF1B3C53),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
+                    decoration: InputDecoration(
+                      hintText: 'Put your date here...',
+                      labelText: 'Date',
+                      suffixIcon: Icon(
+                        Icons.calendar_today,
                         color: Color(0xFF1B3C53),
-                        width: 2.5,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFF1B3C53),
+                          width: 2.5,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      floatingLabelStyle: TextStyle(
+                        color: Color(0xFF1B3C53),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                    floatingLabelStyle: TextStyle(
-                      color: Color(0xFF1B3C53),
-                      fontWeight: FontWeight.w600,
+
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                      );
+
+                      if (pickedDate != null) {
+                        String formattedDate =
+                            "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+
+                        setState(() {
+                          _controllerDate.text = formattedDate;
+                        });
+                      }
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Image :",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF43334C),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: ElevatedButton(
+                          onPressed: _pickImage,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF1B3C53),
+                            foregroundColor: Colors.white,
+                          ),
+                          child: Text("Choose Image"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _controllerImage,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: "Image Path",
+                      hintText: "Image file path will appear here",
                     ),
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Color :",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF43334C),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Pick a Color"),
+                                  content: SingleChildScrollView(
+                                    child: ColorPicker(
+                                      pickerColor: _selectedColor,
+                                      onColorChanged: (Color color) {
+                                        setState(() {
+                                          _selectedColor = color;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text("Done"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF1B3C53),
+                            foregroundColor: Colors.white,
+                          ),
+                          child: Text("Pick Color"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(8.0),
+                  height: 25,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: _selectedColor,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.black26),
+                  ),
+                ),
 
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                    );
-
-                    if (pickedDate != null) {
-                      String formattedDate =
-                          "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
-
-                      setState(() {
-                        _controllerDate.text = formattedDate;
-                      });
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _addData();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Data has been saved'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please complete the form'),
+                        ),
+                      );
                     }
                   },
+                  child: Text(editedData != null ? "Update" : "Submit"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 123, 109, 109),
+                    foregroundColor: Colors.white,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: _pickImage,
-                  child: Text("Choose Image"),
+
+                const SizedBox(height: 20),
+
+                const Center(
+                  child: Text(
+                    'List Data',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              TextFormField(
-                controller: _controllerImage,
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: "Image Path",
-                  hintText: "Image file path will appear here",
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _addData();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Processing Data'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please complete the form')),
-                    );
-                  }
-                },
-                child: Text(editedData != null ? "Update" : "Submit"),
-              ),
-              const SizedBox(height: 20),
-              const Center(
-                child: Text(
-                  'List Data',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _myDataList.length,
-                  itemBuilder: (context, index) {
-                    final data = _myDataList[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 28,
-                            backgroundColor: Colors.grey[300],
-                            backgroundImage:
-                                data['image'] != null && data['image'] != ""
-                                ? FileImage(File(data['image']))
-                                : null,
-                            child: data['image'] == null || data['image'] == ""
-                                ? Icon(Icons.person, color: Colors.white)
-                                : null,
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(data['name'] ?? ''),
-                                Text(data['phone number'] ?? ''),
-                                Text(data['date'] ?? ''),
-                              ],
+
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _myDataList.length,
+                    itemBuilder: (context, index) {
+                      final data = _myDataList[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 28,
+                              backgroundColor: Colors.grey[300],
+                              backgroundImage:
+                                  data['image'] != null && data['image'] != ""
+                                  ? FileImage(File(data['image']))
+                                  : null,
+                              child:
+                                  data['image'] == null || data['image'] == ""
+                                  ? Icon(Icons.person, color: Colors.white)
+                                  : null,
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _editData(data);
-                              });
-                            },
-                            icon: const Icon(Icons.edit),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _deleteData(data);
-                              });
-                            },
-                            icon: const Icon(Icons.delete),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(data['name'] ?? ''),
+                                  Text(data['phone number'] ?? ''),
+                                  Text(data['date'] ?? ''),
+                                  SizedBox(height: 4),
+                                  Container(
+                                    height: 4,
+                                    width: 160,
+                                    decoration: BoxDecoration(
+                                      color: Color(data['color']),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _editData(data);
+                                });
+                              },
+                              icon: const Icon(Icons.edit),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _deleteData(data);
+                                });
+                              },
+                              icon: const Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
